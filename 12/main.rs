@@ -26,22 +26,22 @@ fn main() {
 
     println!("number of programs in group zero: {}", count);
 
-    // this is super slow but it's easy
-    let mut group_hashes = HashSet::new();
+    // this is still pretty slow but it's easy
+    let mut groups: Vec<Vec<String>> = Vec::new();
     for it in programs.iter().cloned() {
-        let all_connections =
-            it.find_all_connected_programs(&programs);
+        if groups.iter().any(|cons| cons.contains(&it.id)) {
+            continue;
+        }
 
-        let mut list = all_connections.iter().cloned()
+        let all_connections = it
+            .find_all_connected_programs(&programs)
+            .into_iter()
             .collect::<Vec<String>>();
-        
-        list.sort_by(|a, b| b.cmp(a));
 
-        let hash = list.join(",");
-        group_hashes.insert(hash);
+        groups.push(all_connections);
     }
 
-    println!("number of groups: {}", group_hashes.len());
+    println!("number of groups: {}", groups.len());
 }
 
 #[derive(Debug, Clone)]
