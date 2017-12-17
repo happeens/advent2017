@@ -1,18 +1,15 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
+    let lines = Input::read("day05").into_lines();
+    let mut instructions_first = lines.iter()
+        .filter_map(|it| match it.parse::<i32>() {
+            Ok(it) => Some(it),
+            Err(_) => None,
+        })
+        .collect::<Vec<i32>>();
 
-    let lines = contents.split("\n");
-    let mut instructions_first: Vec<i32> = lines
-        .filter(|line| !line.is_empty())
-        .map(|instruction| instruction.parse::<i32>().unwrap())
-        .collect();
     let mut instructions_second = instructions_first.clone();
 
     let mut current_pos = 0;

@@ -1,20 +1,9 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let mut blocks: Vec<u32> = contents.split(" ")
-        .filter(|b| !b.is_empty())
-        .map(|b| b.trim())
-        .map(|b| b.parse::<i32>().unwrap_or(-1))
-        .filter(|b| *b >= 0)
-        .map(|b| b as u32)
-        .collect();
+    let mut blocks = Input::read("day06")
+        .into_list::<u32>(" ");
 
     let mut known_cycles = vec![hash_cycle(&blocks)];
     let mut steps = 0;

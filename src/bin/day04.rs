@@ -1,28 +1,21 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::collections::HashSet;
 use std::iter::FromIterator;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let lines: Vec<Vec<String>> = contents
-        .split("\n")
-        .map(|line| {
-            let line: Vec<String> = line
-                .split(" ")
-                .filter(|word| !word.is_empty())
-                .map(|word| word.to_owned())
-                .collect();
-
-            line
+    let lines = Input::read("day04")
+        .into_lines().iter()
+        .map(|it| {
+            it.split(" ")
+                .filter_map(|it| match it.is_empty() {
+                    false => Some(it.to_owned()),
+                    _ => None,
+                })
+                .collect::<Vec<String>>()
         })
-        .filter(|line| !line.is_empty())
-        .collect();
+        .collect::<Vec<Vec<String>>>();
 
     let valid_count = count_valid_lines(&lines);
 

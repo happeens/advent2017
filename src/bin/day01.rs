@@ -1,24 +1,15 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+use advent2017::circular;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let numbers: Vec<u32> = contents
-        .chars()
-        .filter(|x| x.is_digit(10))
-        .map(|x| x.to_digit(10).unwrap())
-        .collect();
+    let numbers = Input::read("day01").into_digits();
 
     let mut sum_first = 0;
 
     for i in 0..numbers.len() {
-        let current = access_circular(&numbers, i);
-        let next = access_circular(&numbers, i + 1);
+        let current = circular::access_circular(i, &numbers);
+        let next = circular::access_circular(i + 1, &numbers);
 
         if current == next {
             sum_first += next;
@@ -31,8 +22,8 @@ fn main() {
     let advance = numbers.len() / 2;
 
     for i in 0..numbers.len() {
-        let current = access_circular(&numbers, i);
-        let next = access_circular(&numbers, i + advance);
+        let current = circular::access_circular(i, &numbers);
+        let next = circular::access_circular(i + advance, &numbers);
 
         if current == next {
             sum_second += next;
@@ -40,9 +31,4 @@ fn main() {
     }
 
     println!("second sum: {}", sum_second);
-}
-
-fn access_circular(v: &Vec<u32>, i: usize) -> u32 {
-    let i = i % v.len();
-    v[i]
 }

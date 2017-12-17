@@ -1,15 +1,8 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let firewall = contents.split("\n")
-        .filter(|it| !it.is_empty())
+    let firewall = Input::read("day13").into_lines().iter()
         .map(|it| Layer::from_string(it))
         .collect::<Firewall>();
 

@@ -1,23 +1,20 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::cmp;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let lines = contents.split("\n");
-    let lines: Vec<Vec<u32>> = lines
-        .map(|line| {
-            line.split("\t")
-                .map(|x| x.parse::<u32>().unwrap_or(0))
-                .filter(|x| *x != 0u32)
+    let lines = Input::read("day02")
+        .into_lines().iter()
+        .map(|it| {
+            it.split("\t")
+                .filter_map(|it| match it.parse::<u32>() {
+                    Ok(it) => Some(it),
+                    Err(_) => None,
+                })
                 .collect()
         })
-        .collect();
+        .collect::<Vec<Vec<u32>>>();
 
     let mut checksum = 0;
 

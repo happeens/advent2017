@@ -1,20 +1,12 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::collections::HashMap;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let lines = contents.split("\n");
-    let entries: Vec<Entry> = lines
-        .filter(|line| !line.is_empty())
-        .map(|line| line.to_owned())
-        .map(|line| Entry::from_string(line))
-        .collect();
+    let entries = Input::read("day07").into_lines().iter()
+        .map(|it| Entry::from_string(it))
+        .collect::<Vec<Entry>>();
 
     let root_entry = find_root_entry(&entries);
     println!("root node name is {}", root_entry.name);
@@ -79,7 +71,7 @@ struct Entry {
 }
 
 impl Entry {
-    fn from_string(s: String) -> Entry {
+    fn from_string(s: &str) -> Entry {
         let parts: Vec<&str> = s.split("(").collect();
         let name = parts.first().unwrap().trim().to_owned();
 

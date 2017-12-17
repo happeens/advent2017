@@ -1,18 +1,12 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::cmp;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let directions = contents.split(",")
-        .filter(|it| !it.is_empty())
-        .map(|it| it.trim())
-        .map(|it| match it {
+    let directions = Input::read("day11")
+        .into_strings(",").iter()
+        .map(|&it| match it {
             "n" => HexDir::N,
             "ne" => HexDir::NE,
             "nw" => HexDir::NW,

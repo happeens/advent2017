@@ -1,16 +1,11 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::iter::FromIterator;
 use std::collections::HashSet;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let programs = contents.split("\n")
+    let programs = Input::read("day12").into_lines().iter()
         .filter(|it| !it.is_empty())
         .map(|it| Program::from_string(it))
         .collect::<Vec<Program>>();

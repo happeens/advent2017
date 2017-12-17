@@ -1,18 +1,11 @@
-use std::fs::File;
-use std::io::prelude::*;
+extern crate advent2017;
+use advent2017::file::Input;
+
 use std::collections::HashMap;
 use std::cmp;
 
 fn main() {
-    let mut input = File::open("input.txt").expect("input not found");
-    let mut contents = String::new();
-    input
-        .read_to_string(&mut contents)
-        .expect("could not read input to string");
-
-    let lines = contents.split("\n");
-    let instructions = lines
-        .filter(|it| !it.is_empty())
+    let instructions = Input::read("day08").into_lines().iter()
         .map(|it| Instruction::from_string(it))
         .collect::<Vec<Instruction>>();
 
